@@ -1,0 +1,138 @@
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+}
+
+/* Login Page */
+.login-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard Page */
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+/* Sidebar Styles */
+.logo {
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* Property Card */
+.property-card {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for loading states */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-stats .ant-card {
+    margin-bottom: 16px;
+  }
+}
+
+/* Highlight row for important notifications */
+.highlight-row {
+  background-color: #fff7e6;
+}
+
+/* Status indicators for various components */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-active {
+  background-color: #52c41a;
+}
+
+.status-inactive {
+  background-color: #ff4d4f;
+}
+
+.status-pending {
+  background-color: #faad14;
+}
+
+/* Property details section */
+.property-detail-section {
+  margin-bottom: 24px;
+}
+
+/* Tenant details section */
+.tenant-info-card {
+  margin-bottom: 16px;
+}
+
+/* Financial summary cards */
+.financial-summary-card {
+  height: 100%;
+}
+
+/* Document library */
+.document-card {
+  margin-bottom: 16px;
+}
+
+/* Custom badge styles */
+.custom-badge {
+  margin-right: 16px;
+}
