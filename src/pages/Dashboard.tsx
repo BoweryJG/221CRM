@@ -27,6 +27,15 @@ import {
   FileTextOutlined,
 } from '@ant-design/icons';
 import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title as ChartTitle,
+  Tooltip as ChartTooltip,
+  Legend,
+} from 'chart.js';
 import { format } from 'date-fns';
 import { DashboardSummary, MaintenanceRequest, Tenant, Property } from '../types';
 import { supabase } from '../utils/supabase';
@@ -72,6 +81,16 @@ const Dashboard: React.FC = () => {
   const [recentMaintenanceRequests, setRecentMaintenanceRequests] = useState<MaintenanceRequest[]>([]);
   const [upcomingLeaseEndings, setUpcomingLeaseEndings] = useState<Tenant[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Register Chart.js components
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    ChartTitle,
+    ChartTooltip,
+    Legend
+  );
 
   useEffect(() => {
     const fetchDashboardData = async () => {
