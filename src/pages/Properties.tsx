@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropertyDetail from '../components/PropertyDetail';
 import {
   Row,
   Col,
@@ -314,8 +315,19 @@ const Properties: React.FC = () => {
     });
   };
 
+  // State to track which property is being viewed in detail
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+
   const handleViewProperty = (id: string) => {
-    navigate(`/properties/${id}`);
+    // Find the property by ID
+    const property = properties.find(p => p.id === id);
+    if (property) {
+      setSelectedProperty(property);
+    }
+  };
+
+  const handleClosePropertyDetail = () => {
+    setSelectedProperty(null);
   };
 
   // Property summary stats
@@ -420,7 +432,11 @@ const Properties: React.FC = () => {
 
   return (
     <div className="properties-page">
-      <div className="page-header" style={{ marginBottom: 24 }}>
+      {selectedProperty ? (
+        <PropertyDetail property={selectedProperty} onClose={handleClosePropertyDetail} />
+      ) : (
+        <>
+          <div className="page-header" style={{ marginBottom: 24 }}>
         <Row justify="space-between" align="middle">
           <Col>
             <Title level={2}>Properties</Title>
@@ -503,6 +519,8 @@ const Properties: React.FC = () => {
           pagination={{ pageSize: 10 }}
         />
       </Card>
+        </>
+      )}
 
       {/* Add Property Modal */}
       <Modal
