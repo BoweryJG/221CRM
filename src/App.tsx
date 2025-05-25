@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react'; // Removed useState, useEffect, Navigate
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ConfigProvider, App as AntApp, theme } from 'antd';
+import { AuthProvider } from './contexts/AuthContext'; // Import the mock AuthProvider
 // Layout
 import MainLayout from './components/layouts/MainLayout';
 
@@ -28,24 +29,25 @@ const App: React.FC = () => {
       }}
     >
       <AntApp>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} /> {/* Keep login page for now, can be removed later if not needed */}
-            
-            {/* Routes accessible without login */}
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/properties" element={<Properties />} />
-              <Route path="/tenants" element={<Tenants />} />
-              <Route path="/financial" element={<Financial />} />
-              <Route path="/documents" element={<Documents />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
-            
-            {/* Not Found */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+        <AuthProvider> {/* Wrap with AuthProvider */}
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              
+              {/* All routes are now accessible */}
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/properties" element={<Properties />} />
+                <Route path="/tenants" element={<Tenants />} />
+                <Route path="/financial" element={<Financial />} />
+                <Route path="/documents" element={<Documents />} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
+              
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </AuthProvider>
       </AntApp>
     </ConfigProvider>
   );
