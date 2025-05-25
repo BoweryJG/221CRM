@@ -131,7 +131,7 @@ function useSupabase<T>(options: FetchOptions): UseSupabaseReturn<T> {
 
     if (options.match) {
       Object.entries(options.match).forEach(([key, value]) => {
-        query = query.match(key, value);
+        query = query.match({ [key]: value });
       });
     }
 
@@ -215,13 +215,14 @@ function useSupabase<T>(options: FetchOptions): UseSupabaseReturn<T> {
     }
   };
 
-  const getById = async (id: string) => {
+  const getById = async (id: string): Promise<{ data: T | null; error: PostgrestError | null }> => {
     try {
-      return await supabase
+      const { data, error } = await supabase
         .from(options.table)
         .select(options.columns || '*')
         .eq('id', id)
-        .single();
+        .single<T>();
+      return { data, error };
     } catch (error) {
       console.error('Error fetching data by ID:', error);
       return { data: null, error: error as PostgrestError };

@@ -152,7 +152,7 @@ const MainLayout: React.FC = () => {
                 <Space style={{ cursor: 'pointer' }}>
                   <Avatar icon={<UserOutlined />} />
                   {user?.email && (
-                    <Text style={{ display: 'none', '@media screen and (min-width: 576px)': { display: 'inline' } }}>
+                    <Text style={{ display: 'none' }} className="user-email">
                       {user.email}
                     </Text>
                   )}

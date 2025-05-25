@@ -247,7 +247,7 @@ class ApiService {
     documentDetails: Omit<Document, 'id' | 'file_url' | 'file_size' | 'createdAt' | 'updatedAt'>
   ) {
     // 1. Upload file to storage
-    const filePath = `${documentDetails.related_to}/${documentDetails.related_id}/${file.name}`;
+    const filePath = `${documentDetails.relatedTo}/${documentDetails.relatedId}/${file.name}`;
     const { data: fileData, error: fileError } = await supabase
       .storage
       .from('documents')

@@ -136,3 +136,10 @@ body {
 .custom-badge {
   margin-right: 16px;
 }
+
+/* User email display in header */
+@media screen and (min-width: 576px) {
+  .user-email {
+    display: inline !important;
+  }
+}
