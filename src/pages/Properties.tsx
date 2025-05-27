@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import PropertyDetail from '../components/PropertyDetail';
 import { motion } from 'framer-motion';
 import {
@@ -17,7 +16,6 @@ import {
   Select,
   Divider,
   Statistic,
-  Badge,
   Tooltip,
   notification,
 } from 'antd';
@@ -25,7 +23,6 @@ import {
   SearchOutlined,
   PlusOutlined,
   EditOutlined,
-  DeleteOutlined,
   EyeOutlined,
   HomeOutlined,
   ShopOutlined,
@@ -34,14 +31,12 @@ import {
   DollarOutlined,
 } from '@ant-design/icons';
 import { Property } from '../types';
-import { supabase } from '../utils/supabase';
 import { format } from 'date-fns';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Properties: React.FC = () => {
-  const navigate = useNavigate();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -359,7 +354,7 @@ const Properties: React.FC = () => {
       render: (text: string, record: Property) => (
         <Space>
           {propertyTypeIcon(record.propertyType)}
-          <a onClick={() => handleViewProperty(record.id)}>{text}</a>
+          <Button type="link" onClick={() => handleViewProperty(record.id)}>{text}</Button>
         </Space>
       ),
     },

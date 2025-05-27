@@ -16,7 +16,6 @@ import {
   Divider,
   message,
   Dropdown,
-  Menu,
 } from 'antd';
 import {
   FileAddOutlined,
@@ -53,7 +52,6 @@ const Documents: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedRelatedTo, setSelectedRelatedTo] = useState<string | null>(null);
-  const [selectedRelatedId, setSelectedRelatedId] = useState<string | null>(null);
   const [form] = Form.useForm();
 
   // Mock data
@@ -269,12 +267,10 @@ const Documents: React.FC = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     setSelectedRelatedTo(null);
-    setSelectedRelatedId(null);
   };
 
   const handleRelatedToChange = (value: string) => {
     setSelectedRelatedTo(value);
-    setSelectedRelatedId(null);
     form.setFieldsValue({ relatedId: undefined });
   };
 

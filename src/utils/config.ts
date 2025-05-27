@@ -49,8 +49,8 @@ const ERROR_MESSAGES = {
   NOT_FOUND: 'The requested resource was not found.',
 };
 
-// Export configuration
-export default {
+// Create configuration object
+const config = {
   isProduction,
   isDevelopment,
   SUPABASE_URL,
@@ -68,3 +68,6 @@ export default {
   FEATURES,
   ERROR_MESSAGES,
 };
+
+// Export configuration
+export default config;

@@ -12,7 +12,6 @@ import {
   Space, 
   Button,
   Image,
-  List,
   Timeline,
   Empty
 } from 'antd';
@@ -21,9 +20,7 @@ import {
   DollarOutlined,
   TeamOutlined,
   CalendarOutlined,
-  FileTextOutlined,
   ToolOutlined,
-  BankOutlined,
   ShopOutlined,
   BuildOutlined
 } from '@ant-design/icons';
@@ -171,7 +168,6 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({ property, onClose }) =>
   
   // Calculate financial metrics
   const monthlyRentalIncome = units.reduce((sum, unit) => sum + (unit.isOccupied ? unit.monthlyRent : 0), 0);
-  const potentialMonthlyIncome = units.reduce((sum, unit) => sum + unit.monthlyRent, 0);
   const annualRentalIncome = monthlyRentalIncome * 12;
   const vacancyRate = units.length > 0 ? (units.filter(unit => !unit.isOccupied).length / units.length) * 100 : 0;
   

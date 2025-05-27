@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Tabs, Form, Input, Button, Switch, Row, Col, Select, Space, Divider } from 'antd';
+import { Card, Typography, Tabs, Form, Input, Button, Switch, Row, Col, Select, Divider } from 'antd';
 import { SaveOutlined, SettingOutlined, UserOutlined, BellOutlined, SafetyOutlined, GlobalOutlined } from '@ant-design/icons';
 import { AppSettings } from '../types';
 import config from '../utils/config';

@@ -17,7 +17,6 @@ import {
   Form,
   Input,
   Divider,
-  Tooltip,
 } from 'antd';
 import {
   DollarOutlined,
@@ -28,11 +27,6 @@ import {
   ArrowUpOutlined,
   ArrowDownOutlined,
   MoreOutlined,
-  CalendarOutlined,
-  HomeOutlined,
-  AppstoreOutlined,
-  BankOutlined,
-  CreditCardOutlined,
 } from '@ant-design/icons';
 import { Bar } from 'react-chartjs-2';
 import { format } from 'date-fns';
@@ -51,7 +45,6 @@ const Financial: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [transactionType, setTransactionType] = useState<'income' | 'expense'>('income');
-  const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState<[Date, Date]>([
     new Date(new Date().setMonth(new Date().getMonth() - 1)),
     new Date(),
@@ -686,7 +679,6 @@ const Financial: React.FC = () => {
                     placeholder="Property" 
                     style={{ width: 200 }}
                     allowClear
-                    onChange={(value) => setSelectedProperty(value)}
                   >
                     {properties.map(property => (
                       <Option key={property.id} value={property.id}>

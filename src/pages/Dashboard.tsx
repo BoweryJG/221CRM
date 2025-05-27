@@ -23,10 +23,7 @@ import {
   DollarOutlined,
   ToolOutlined,
   ArrowUpOutlined,
-  ArrowDownOutlined,
-  RiseOutlined,
   CalendarOutlined,
-  FileTextOutlined,
 } from '@ant-design/icons';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -39,8 +36,7 @@ import {
   Legend,
 } from 'chart.js';
 import { format } from 'date-fns';
-import { DashboardSummary, MaintenanceRequest, Tenant, Property } from '../types';
-import { supabase } from '../utils/supabase';
+import { DashboardSummary, MaintenanceRequest, Tenant } from '../types';
 
 // Mock chart data - would be replaced with real data from the database
 const chartData = {
@@ -67,7 +63,7 @@ const { Title, Text } = Typography;
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [dashboardData, setDashboardData] = useState<DashboardSummary>({
+  const [dashboardData] = useState<DashboardSummary>({
     totalProperties: 11, // based on research - Joseph Betesh bought 11 buildings
     totalUnits: 42,
     occupancyRate: 92.5,
@@ -215,7 +211,7 @@ const Dashboard: React.FC = () => {
       title: 'Property',
       dataIndex: 'propertyId',
       key: 'property',
-      render: (text: string) => <a>{text}</a>,
+      render: (text: string) => <Button type="link">{text}</Button>,
     },
     {
       title: 'Unit',

@@ -16,11 +16,7 @@ import {
   Select,
   DatePicker,
   notification,
-  Badge,
-  Tooltip,
 } from 'antd';
-import { ProTable } from '@ant-design/pro-components';
-import { motion } from 'framer-motion';
 import {
   SearchOutlined,
   PlusOutlined,
@@ -29,13 +25,10 @@ import {
   MailOutlined,
   PhoneOutlined,
   DollarOutlined,
-  EnvironmentOutlined,
-  CalendarOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
 import { format } from 'date-fns';
 import { Tenant, Property, Unit } from '../types';
-import { supabase } from '../utils/supabase';
 import type { MenuProps } from 'antd';
 
 const { Title, Text } = Typography;
@@ -445,9 +438,9 @@ const Tenants: React.FC = () => {
       render: (_: string, record: Tenant) => (
         <Space>
           <UserOutlined />
-          <a onClick={() => handleViewTenant(record.id)}>
+          <Button type="link" onClick={() => handleViewTenant(record.id)}>
             {record.firstName} {record.lastName}
-          </a>
+          </Button>
         </Space>
       ),
     },
