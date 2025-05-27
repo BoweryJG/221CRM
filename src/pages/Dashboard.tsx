@@ -15,6 +15,8 @@ import {
   Space,
   Badge,
 } from 'antd';
+import { ProCard, StatisticCard } from '@ant-design/pro-components';
+import { motion } from 'framer-motion';
 import {
   HomeOutlined,
   TeamOutlined,
@@ -294,103 +296,136 @@ const Dashboard: React.FC = () => {
       {/* Key Stats Row */}
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Properties"
-              value={dashboardData.totalProperties}
-              prefix={<HomeOutlined />}
-              valueStyle={{ color: '#3f8600' }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
+            <StatisticCard
+              statistic={{
+                title: 'Properties',
+                value: dashboardData.totalProperties,
+                prefix: <HomeOutlined />,
+                description: <Text type="secondary">Bowery portfolio</Text>,
+              }}
+              style={{ height: '100%' }}
             />
-            <div style={{ marginTop: 8 }}>
-              <Text type="secondary">Bowery portfolio</Text>
-            </div>
-          </Card>
+          </motion.div>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Occupancy Rate"
-              value={dashboardData.occupancyRate}
-              suffix="%"
-              prefix={<TeamOutlined />}
-              valueStyle={{ color: dashboardData.occupancyRate > 90 ? '#3f8600' : '#cf1322' }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <StatisticCard
+              statistic={{
+                title: 'Occupancy Rate',
+                value: dashboardData.occupancyRate,
+                suffix: '%',
+                prefix: <TeamOutlined />,
+              }}
+              chart={
+                <Progress 
+                  percent={dashboardData.occupancyRate} 
+                  showInfo={false} 
+                  strokeColor={dashboardData.occupancyRate > 90 ? '#3f8600' : '#cf1322'} 
+                  style={{ marginTop: 8 }}
+                />
+              }
+              chartPlacement="bottom"
+              style={{ height: '100%' }}
             />
-            <Progress 
-              percent={dashboardData.occupancyRate} 
-              showInfo={false} 
-              strokeColor={dashboardData.occupancyRate > 90 ? '#3f8600' : '#cf1322'} 
-            />
-          </Card>
+          </motion.div>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Monthly Revenue"
-              value={dashboardData.monthlyRevenue}
-              prefix={<DollarOutlined />}
-              suffix="USD"
-              valueStyle={{ color: '#3f8600' }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <StatisticCard
+              statistic={{
+                title: 'Monthly Revenue',
+                value: dashboardData.monthlyRevenue,
+                prefix: '$',
+                description: (
+                  <Space>
+                    <ArrowUpOutlined style={{ color: '#3f8600' }} />
+                    <Text type="secondary">5.2% from last month</Text>
+                  </Space>
+                ),
+              }}
+              style={{ height: '100%' }}
             />
-            <div style={{ marginTop: 8 }}>
-              <Text type="secondary">
-                <ArrowUpOutlined /> 5.2% from last month
-              </Text>
-            </div>
-          </Card>
+          </motion.div>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Pending Maintenance"
-              value={dashboardData.pendingMaintenance}
-              prefix={<ToolOutlined />}
-              valueStyle={{ color: dashboardData.pendingMaintenance > 10 ? '#cf1322' : '#1890ff' }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+          >
+            <StatisticCard
+              statistic={{
+                title: 'Pending Maintenance',
+                value: dashboardData.pendingMaintenance,
+                prefix: <ToolOutlined />,
+                valueStyle: { color: dashboardData.pendingMaintenance > 10 ? '#cf1322' : '#1890ff' },
+              }}
+              extra={
+                <Button type="link" onClick={() => navigate('/maintenance')} style={{ padding: 0 }}>
+                  View All
+                </Button>
+              }
+              style={{ height: '100%' }}
             />
-            <div style={{ marginTop: 8 }}>
-              <Button type="link" onClick={() => navigate('/maintenance')} style={{ padding: 0 }}>
-                View All
-              </Button>
-            </div>
-          </Card>
+          </motion.div>
         </Col>
       </Row>
 
       {/* Income/Expense Chart */}
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <Col xs={24} lg={16}>
-          <Card 
-            title={
-              <Space>
-                <DollarOutlined />
-                <span>Financial Overview (Last 6 Months)</span>
-              </Space>
-            } 
-            bordered={false}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <Bar 
-              data={chartData}
-              options={{
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    ticks: {
-                      callback: function(value) {
-                        return '$' + value.toLocaleString();
+            <ProCard 
+              title={
+                <Space>
+                  <DollarOutlined />
+                  <span>Financial Overview (Last 6 Months)</span>
+                </Space>
+              }
+              headerBordered
+              hoverable
+            >
+              <Bar 
+                data={chartData}
+                options={{
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        callback: function(value) {
+                          return '$' + value.toLocaleString();
+                        }
                       }
                     }
-                  }
-                },
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: 'top',
                   },
-                  tooltip: {
-                    callbacks: {
-                      label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                          label += ': ';
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function(context) {
+                          let label = context.dataset.label || '';
+                          if (label) {
+                            label += ': ';
                         }
                         if (context.parsed.y !== null) {
                           label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
@@ -429,56 +464,70 @@ const Dashboard: React.FC = () => {
                 />
               </Col>
             </Row>
-          </Card>
+            </ProCard>
+          </motion.div>
         </Col>
         
         {/* Upcoming Lease Endings */}
         <Col xs={24} lg={8}>
-          <Card 
-            title={
-              <Space>
-                <CalendarOutlined />
-                <span>Upcoming Lease Endings</span>
-              </Space>
-            } 
-            bordered={false}
-            extra={<Button type="link" onClick={() => navigate('/tenants')}>All Tenants</Button>}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <List
-              itemLayout="horizontal"
-              dataSource={upcomingLeaseEndings}
-              renderItem={item => (
-                <List.Item
-                  actions={[
-                    <Button type="link" onClick={() => navigate(`/tenants/${item.id}`)}>Details</Button>
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={`${item.firstName} ${item.lastName}`}
-                    description={
-                      <Space direction="vertical" size={0}>
-                        <Text>{`${item.unitId}, $${item.rentAmount}/month`}</Text>
-                        <Text type="secondary">Lease ends: {format(new Date(item.leaseEndDate), 'MMM dd, yyyy')}</Text>
-                      </Space>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
+            <ProCard 
+              title={
+                <Space>
+                  <CalendarOutlined />
+                  <span>Upcoming Lease Endings</span>
+                </Space>
+              }
+              headerBordered
+              hoverable
+              extra={<Button type="link" onClick={() => navigate('/tenants')}>All Tenants</Button>}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={upcomingLeaseEndings}
+                renderItem={item => (
+                  <List.Item
+                    actions={[
+                      <Button type="link" onClick={() => navigate(`/tenants/${item.id}`)}>Details</Button>
+                    ]}
+                  >
+                    <List.Item.Meta
+                      title={`${item.firstName} ${item.lastName}`}
+                      description={
+                        <Space direction="vertical" size={0}>
+                          <Text>{`${item.unitId}, $${item.rentAmount}/month`}</Text>
+                          <Text type="secondary">Lease ends: {format(new Date(item.leaseEndDate), 'MMM dd, yyyy')}</Text>
+                        </Space>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            </ProCard>
+          </motion.div>
         </Col>
       </Row>
 
       {/* Recent Maintenance Requests */}
-      <div style={{ marginTop: 24 }}>
-        <Card 
+      <motion.div 
+        style={{ marginTop: 24 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+      >
+        <ProCard 
           title={
             <Space>
               <ToolOutlined />
               <span>Recent Maintenance Requests</span>
             </Space>
-          } 
-          bordered={false}
+          }
+          headerBordered
+          hoverable
           extra={<Button type="primary" onClick={() => navigate('/maintenance')}>Create Request</Button>}
         >
           <Table
@@ -488,8 +537,8 @@ const Dashboard: React.FC = () => {
             loading={loading}
             pagination={false}
           />
-        </Card>
-      </div>
+        </ProCard>
+      </motion.div>
 
       {/* Properties Snapshot */}
       <div style={{ marginTop: 24 }}>

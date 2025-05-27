@@ -19,6 +19,8 @@ import {
   Badge,
   Tooltip,
 } from 'antd';
+import { ProTable } from '@ant-design/pro-components';
+import { motion } from 'framer-motion';
 import {
   SearchOutlined,
   PlusOutlined,
