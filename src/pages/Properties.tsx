@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropertyDetail from '../components/PropertyDetail';
+import { motion } from 'framer-motion';
 import {
   Row,
   Col,
@@ -459,66 +460,96 @@ const Properties: React.FC = () => {
       {/* Properties Summary */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Total Properties"
-              value={totalProperties}
-              prefix={<HomeOutlined />}
-              valueStyle={{ color: '#3f8600' }}
-            />
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
+            <Card bordered={false}>
+              <Statistic
+                title="Total Properties"
+                value={totalProperties}
+                prefix={<HomeOutlined />}
+                valueStyle={{ color: '#3f8600' }}
+              />
+            </Card>
+          </motion.div>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Total Units"
-              value={totalUnits}
-              prefix={<BuildOutlined />}
-            />
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <Card bordered={false}>
+              <Statistic
+                title="Total Units"
+                value={totalUnits}
+                prefix={<BuildOutlined />}
+              />
+            </Card>
+          </motion.div>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Occupancy Rate"
-              value={occupancyRate.toFixed(1)}
-              suffix="%"
-              prefix={<TeamOutlined />}
-              valueStyle={{ color: occupancyRate > 90 ? '#3f8600' : '#cf1322' }}
-            />
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <Card bordered={false}>
+              <Statistic
+                title="Occupancy Rate"
+                value={occupancyRate.toFixed(1)}
+                suffix="%"
+                prefix={<TeamOutlined />}
+                valueStyle={{ color: occupancyRate > 90 ? '#3f8600' : '#cf1322' }}
+              />
+            </Card>
+          </motion.div>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
-            <Statistic
-              title="Portfolio Value"
-              value={totalValue}
-              prefix={<DollarOutlined />}
-              valueStyle={{ color: '#3f8600' }}
-              formatter={value => `$${Number(value).toLocaleString()}`}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+          >
+            <Card bordered={false}>
+              <Statistic
+                title="Portfolio Value"
+                value={totalValue}
+                prefix={<DollarOutlined />}
+                valueStyle={{ color: '#3f8600' }}
+                formatter={value => `$${Number(value).toLocaleString()}`}
             />
           </Card>
+          </motion.div>
         </Col>
       </Row>
 
       {/* Properties Table */}
-      <Card bordered={false}>
-        <div style={{ marginBottom: 16 }}>
-          <Input
-            placeholder="Search properties..."
-            prefix={<SearchOutlined />}
-            onChange={handleSearch}
-            style={{ width: 300 }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        <Card bordered={false}>
+          <div style={{ marginBottom: 16 }}>
+            <Input
+              placeholder="Search properties..."
+              prefix={<SearchOutlined />}
+              onChange={handleSearch}
+              style={{ width: 300 }}
+            />
+          </div>
+          <Table
+            columns={columns}
+            dataSource={filteredProperties}
+            rowKey="id"
+            loading={loading}
+            pagination={{ pageSize: 10 }}
           />
-        </div>
-        <Table
-          columns={columns}
-          dataSource={filteredProperties}
-          rowKey="id"
-          loading={loading}
-          pagination={{ pageSize: 10 }}
-        />
-      </Card>
+        </Card>
+      </motion.div>
         </>
       )}
 

@@ -9,6 +9,7 @@ import {
   Avatar,
   Typography,
   Space,
+  Switch,
 } from 'antd';
 import type { MenuProps } from 'antd';
 import {
@@ -24,8 +25,11 @@ import {
   UserOutlined,
   LogoutOutlined,
   BellOutlined,
+  SunOutlined,
+  MoonOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const { Header, Sider, Content } = Layout;
 const { Text, Title } = Typography;
@@ -35,6 +39,7 @@ const MainLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -143,6 +148,13 @@ const MainLayout: React.FC = () => {
               style={{ fontSize: '16px', width: 64, height: 64 }}
             />
             <Space>
+              <Switch
+                checked={isDarkMode}
+                onChange={toggleTheme}
+                checkedChildren={<MoonOutlined />}
+                unCheckedChildren={<SunOutlined />}
+                style={{ marginRight: 8 }}
+              />
               <Button
                 type="text"
                 icon={<BellOutlined />}

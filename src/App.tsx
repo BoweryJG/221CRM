@@ -1,7 +1,8 @@
-import React from 'react'; // Removed useState, useEffect, Navigate
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ConfigProvider, App as AntApp, theme } from 'antd';
-import { AuthProvider } from './contexts/AuthContext'; // Import the mock AuthProvider
+import { App as AntApp } from 'antd';
+import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 // Layout
 import MainLayout from './components/layouts/MainLayout';
 
@@ -19,17 +20,9 @@ import './App.css';
 
 const App: React.FC = () => {
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.defaultAlgorithm,
-        token: {
-          colorPrimary: '#2E5F85',
-          borderRadius: 4,
-        },
-      }}
-    >
+    <ThemeProvider>
       <AntApp>
-        <AuthProvider> {/* Wrap with AuthProvider */}
+        <AuthProvider>
           <Router>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -49,7 +42,7 @@ const App: React.FC = () => {
           </Router>
         </AuthProvider>
       </AntApp>
-    </ConfigProvider>
+    </ThemeProvider>
   );
 };
 
