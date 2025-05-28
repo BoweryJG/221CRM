@@ -8,9 +8,10 @@ import {
   Card,
   Alert,
   Row,
-  Col
+  Col,
+  Tooltip
 } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { LockOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 
 const { Title, Text } = Typography;
@@ -89,6 +90,11 @@ const Login: React.FC = () => {
                 placeholder="Enter Password"
                 autoComplete="current-password"
                 autoFocus
+                suffix={
+                  <Tooltip title="Hint: Jason's last name">
+                    <QuestionCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                  </Tooltip>
+                }
               />
             </Form.Item>
             
