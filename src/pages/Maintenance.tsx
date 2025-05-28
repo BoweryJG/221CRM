@@ -10,7 +10,6 @@ import {
   Form,
   Input,
   Select,
-  DatePicker,
   Upload,
   message,
   Row,
@@ -29,7 +28,6 @@ import {
   ExclamationCircleOutlined,
   UploadOutlined,
   CalendarOutlined,
-  UserOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';

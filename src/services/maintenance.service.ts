@@ -101,7 +101,7 @@ class MaintenanceService {
     const fileExt = file.name.split('.').pop();
     const fileName = `${requestId}/${Date.now()}.${fileExt}`;
     
-    const { data, error } = await this.supabase.storage
+    const { error } = await this.supabase.storage
       .from('maintenance-images')
       .upload(fileName, file);
 
