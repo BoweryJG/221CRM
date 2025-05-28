@@ -93,6 +93,65 @@ body {
   .dashboard-stats .ant-card {
     margin-bottom: 16px;
   }
+  
+  /* Mobile Layout Adjustments */
+  .ant-layout-content {
+    margin: 12px !important;
+    padding: 16px !important;
+  }
+  
+  /* Mobile Tables */
+  .ant-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  /* Mobile Cards */
+  .ant-card {
+    margin-bottom: 12px;
+  }
+  
+  /* Mobile Forms */
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
+  
+  /* Mobile Buttons */
+  .ant-btn {
+    touch-action: manipulation;
+  }
+  
+  /* Mobile Modal */
+  .ant-modal {
+    max-width: calc(100vw - 32px);
+  }
+  
+  /* Mobile Typography */
+  h1.ant-typography {
+    font-size: 24px !important;
+  }
+  
+  h2.ant-typography {
+    font-size: 20px !important;
+  }
+  
+  h3.ant-typography {
+    font-size: 18px !important;
+  }
+  
+  /* Hide desktop-only elements */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Mobile Menu */
+  .ant-menu-item {
+    margin: 4px 0 !important;
+  }
+  
+  /* Mobile Drawer */
+  .ant-drawer-body {
+    padding: 0;
+  }
 }
 
 /* Highlight row for important notifications */

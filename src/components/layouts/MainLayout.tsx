@@ -10,6 +10,7 @@ import {
   Typography,
   Space,
   Switch,
+  Drawer,
 } from 'antd';
 import type { MenuProps } from 'antd';
 import {
@@ -36,17 +37,34 @@ const { Text, Title } = Typography;
 
 const MainLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setMobileDrawerVisible(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleMenuClick = (path: string) => {
     navigate(path);
+    if (isMobile) {
+      setMobileDrawerVisible(false);
+    }
   };
 
   const handleSignOut = async () => {
@@ -116,35 +134,60 @@ const MainLayout: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        width={250}
-        style={{
-          background: '#001529',
-        }}
-      >
-        <div className="logo" style={{ padding: '16px', textAlign: 'center' }}>
-          <Title level={4} style={{ color: 'white', margin: 0 }}>
-            {collapsed ? '221' : '221CRM'}
-          </Title>
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={[location.pathname]}
-          items={menuItems}
-          selectedKeys={[location.pathname]}
-        />
-      </Sider>
+      {!isMobile && (
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          width={250}
+          style={{
+            background: '#001529',
+          }}
+        >
+          <div className="logo" style={{ padding: '16px', textAlign: 'center' }}>
+            <Title level={4} style={{ color: 'white', margin: 0 }}>
+              {collapsed ? '221' : '221CRM'}
+            </Title>
+          </div>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={[location.pathname]}
+            items={menuItems}
+            selectedKeys={[location.pathname]}
+          />
+        </Sider>
+      )}
+      
+      {isMobile && (
+        <Drawer
+          title={
+            <Title level={4} style={{ margin: 0 }}>
+              221CRM
+            </Title>
+          }
+          placement="left"
+          onClose={() => setMobileDrawerVisible(false)}
+          open={mobileDrawerVisible}
+          width={280}
+          bodyStyle={{ padding: 0 }}
+        >
+          <Menu
+            theme="light"
+            mode="inline"
+            defaultSelectedKeys={[location.pathname]}
+            items={menuItems}
+            selectedKeys={[location.pathname]}
+          />
+        </Drawer>
+      )}
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: 24 }}>
             <Button
               type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
+              icon={isMobile ? <MenuUnfoldOutlined /> : (collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />)}
+              onClick={() => isMobile ? setMobileDrawerVisible(true) : setCollapsed(!collapsed)}
               style={{ fontSize: '16px', width: 64, height: 64 }}
             />
             <Space>

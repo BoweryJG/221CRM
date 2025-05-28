@@ -10,6 +10,7 @@ import MainLayout from './components/layouts/MainLayout';
 import Dashboard from './pages/Dashboard';
 import Properties from './pages/Properties';
 import Tenants from './pages/Tenants';
+import Maintenance from './pages/Maintenance';
 import Financial from './pages/Financial';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
@@ -32,6 +33,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/properties" element={<Properties />} />
                 <Route path="/tenants" element={<Tenants />} />
+                <Route path="/maintenance" element={<Maintenance />} />
                 <Route path="/financial" element={<Financial />} />
                 <Route path="/documents" element={<Documents />} />
                 <Route path="/settings" element={<Settings />} />
