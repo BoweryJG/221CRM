@@ -10,8 +10,7 @@ import {
 } from 'antd';
 import { 
   LockOutlined, 
-  KeyOutlined,
-  QuestionCircleOutlined
+  KeyOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -91,17 +90,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible }) => {
           <Form.Item
             name="password"
             rules={[{ required: true, message: 'Please enter the password' }]}
+            extra={<Text type="secondary" style={{ fontSize: '12px' }}>Hint: Jason's last name</Text>}
           >
             <Input.Password
               prefix={<LockOutlined />}
               placeholder="Password"
               autoComplete="current-password"
               autoFocus
-              suffix={
-                <Tooltip title="Hint: Jason's last name">
-                  <QuestionCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                </Tooltip>
-              }
             />
           </Form.Item>
           
