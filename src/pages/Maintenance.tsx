@@ -34,14 +34,13 @@ import {
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import { maintenanceService } from '../services/maintenance.service';
+import type { MaintenanceRequest as MaintenanceRequestType } from '../services/maintenance.service';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
-
-import type { MaintenanceRequest as MaintenanceRequestType } from '../services/maintenance.service';
 
 type MaintenanceRequest = MaintenanceRequestType & { id: string };
 
