@@ -41,27 +41,9 @@ const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
-interface MaintenanceRequest {
-  id: string;
-  property_id: string;
-  property_name: string;
-  unit_number: string;
-  tenant_id: string;
-  tenant_name: string;
-  category: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-  title: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-  scheduled_date?: string;
-  completed_date?: string;
-  assigned_to?: string;
-  cost?: number;
-  images?: string[];
-  notes?: string;
-}
+import type { MaintenanceRequest as MaintenanceRequestType } from '../services/maintenance.service';
+
+type MaintenanceRequest = MaintenanceRequestType & { id: string };
 
 const Maintenance: React.FC = () => {
   const { user } = useAuth();
@@ -88,7 +70,9 @@ const Maintenance: React.FC = () => {
     setLoading(true);
     try {
       const data = await maintenanceService.getRequests();
-      setRequests(data);
+      // Filter out any requests without an id
+      const validRequests = data.filter((req): req is MaintenanceRequest => !!req.id);
+      setRequests(validRequests);
     } catch (error) {
       console.error('Error fetching maintenance requests:', error);
       message.error('Failed to load maintenance requests');
