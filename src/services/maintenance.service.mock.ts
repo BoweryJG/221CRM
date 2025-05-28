@@ -1,5 +1,4 @@
 // Mock Maintenance Service - No external database connections
-import { v4 as uuidv4 } from 'uuid';
 
 export interface MaintenanceRequest {
   id?: string;
@@ -108,6 +107,11 @@ let mockRequests: MaintenanceRequest[] = [
   }
 ];
 
+// Simple ID generator without external dependencies
+const generateId = () => {
+  return `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
+
 class MockMaintenanceService {
   async createRequest(request: Omit<MaintenanceRequest, 'id'>): Promise<MaintenanceRequest> {
     // Simulate API delay
@@ -115,7 +119,7 @@ class MockMaintenanceService {
     
     const newRequest: MaintenanceRequest = {
       ...request,
-      id: uuidv4(),
+      id: generateId(),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
