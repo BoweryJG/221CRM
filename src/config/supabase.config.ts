@@ -7,14 +7,14 @@ export interface SupabaseConfig {
 
 // Main 221CRM Supabase instance
 export const mainSupabaseConfig: SupabaseConfig = {
-  url: process.env.REACT_APP_SUPABASE_URL || '',
-  anonKey: process.env.REACT_APP_SUPABASE_ANON_KEY || '',
+  url: process.env.REACT_APP_SUPABASE_URL || 'https://placeholder.supabase.co',
+  anonKey: process.env.REACT_APP_SUPABASE_ANON_KEY || 'placeholder-key',
 };
 
 // Sphere OS Supabase instance (for maintenance requests)
 export const sphereOsSupabaseConfig: SupabaseConfig = {
-  url: process.env.REACT_APP_SPHERE_OS_SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '',
-  anonKey: process.env.REACT_APP_SPHERE_OS_SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '',
+  url: process.env.REACT_APP_SPHERE_OS_SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || 'https://placeholder.supabase.co',
+  anonKey: process.env.REACT_APP_SPHERE_OS_SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || 'placeholder-key',
 };
 
 // Function to validate config
