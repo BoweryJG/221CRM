@@ -130,7 +130,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible }) => {
           </Text>
           <br />
           <Text type="secondary" style={{ fontSize: '12px' }}>
-            221 Bowery Property Management
+            Milestone Equities
           </Text>
         </div>
       </div>

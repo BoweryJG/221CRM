@@ -248,7 +248,7 @@ const MainLayout: React.FC = () => {
                         {user.user_metadata?.full_name || 'User'}
                       </Text>
                       <Text type="secondary" style={{ fontSize: '12px' }}>
-                        {user.user_metadata?.role || 'User'}
+                        Milestone Equities
                       </Text>
                     </div>
                   )}

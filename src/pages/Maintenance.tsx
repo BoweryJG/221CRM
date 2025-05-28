@@ -31,8 +31,8 @@ import {
   HomeOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
-import { maintenanceService } from '../services/maintenance.service';
-import type { MaintenanceRequest as MaintenanceRequestType } from '../services/maintenance.service';
+import { maintenanceService } from '../services/maintenance.service.mock';
+import type { MaintenanceRequest as MaintenanceRequestType } from '../services/maintenance.service.mock';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 
