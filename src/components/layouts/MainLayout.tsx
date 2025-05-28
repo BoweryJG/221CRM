@@ -43,6 +43,8 @@ const MainLayout: React.FC = () => {
   const { user, signOut } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -59,6 +61,31 @@ const MainLayout: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Handle swipe gestures for mobile drawer
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    if (isRightSwipe && isMobile && !mobileDrawerVisible) {
+      setMobileDrawerVisible(true);
+    }
+    if (isLeftSwipe && isMobile && mobileDrawerVisible) {
+      setMobileDrawerVisible(false);
+    }
+  };
 
   const handleMenuClick = (path: string) => {
     navigate(path);
@@ -133,7 +160,12 @@ const MainLayout: React.FC = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout 
+      style={{ minHeight: '100vh' }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {!isMobile && (
         <Sider
           trigger={null}
@@ -146,7 +178,7 @@ const MainLayout: React.FC = () => {
         >
           <div className="logo" style={{ padding: '16px', textAlign: 'center' }}>
             <Title level={4} style={{ color: 'white', margin: 0 }}>
-              {collapsed ? '221' : '221CRM'}
+              {collapsed ? 'DM' : "Doug Mino's CRM"}
             </Title>
           </div>
           <Menu
@@ -163,7 +195,7 @@ const MainLayout: React.FC = () => {
         <Drawer
           title={
             <Title level={4} style={{ margin: 0 }}>
-              221CRM
+              Doug Mino's CRM
             </Title>
           }
           placement="left"
@@ -198,18 +230,27 @@ const MainLayout: React.FC = () => {
                 unCheckedChildren={<SunOutlined />}
                 style={{ marginRight: 8 }}
               />
-              <Button
-                type="text"
-                icon={<BellOutlined />}
-                style={{ fontSize: '16px' }}
-              />
+              {!isMobile && (
+                <Button
+                  type="text"
+                  icon={<BellOutlined />}
+                  style={{ fontSize: '16px' }}
+                />
+              )}
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                 <Space style={{ cursor: 'pointer' }}>
-                  <Avatar icon={<UserOutlined />} />
-                  {user?.email && (
-                    <Text style={{ display: 'none' }} className="user-email">
-                      {user.email}
-                    </Text>
+                  <Avatar style={{ backgroundColor: '#2E5F85' }}>
+                    {user?.user_metadata?.full_name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
+                  </Avatar>
+                  {user && !isMobile && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginLeft: 8 }}>
+                      <Text strong style={{ fontSize: '14px' }}>
+                        {user.user_metadata?.full_name || 'User'}
+                      </Text>
+                      <Text type="secondary" style={{ fontSize: '12px' }}>
+                        {user.user_metadata?.role || 'User'}
+                      </Text>
+                    </div>
                   )}
                 </Space>
               </Dropdown>
@@ -218,11 +259,12 @@ const MainLayout: React.FC = () => {
         </Header>
         <Content
           style={{
-            margin: '24px 16px',
-            padding: 24,
+            margin: isMobile ? '12px 8px' : '24px 16px',
+            padding: isMobile ? 12 : 24,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
             overflowY: 'auto',
+            minHeight: 'calc(100vh - 64px - 24px)',
           }}
         >
           <Outlet />

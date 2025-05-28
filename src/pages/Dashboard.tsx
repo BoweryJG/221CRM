@@ -37,6 +37,7 @@ import {
 } from 'chart.js';
 import { format } from 'date-fns';
 import { DashboardSummary, MaintenanceRequest, Tenant } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 // Mock chart data - would be replaced with real data from the database
 const chartData = {
@@ -63,6 +64,8 @@ const { Title, Text } = Typography;
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [dashboardData] = useState<DashboardSummary>({
     totalProperties: 11, // based on research - Joseph Betesh bought 11 buildings
     totalUnits: 42,
@@ -89,6 +92,15 @@ const Dashboard: React.FC = () => {
     ChartTooltip,
     Legend
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -206,6 +218,42 @@ const Dashboard: React.FC = () => {
     fetchDashboardData();
   }, []);
 
+  // Mobile-optimized columns
+  const mobileMaintenanceColumns = [
+    {
+      title: 'Request',
+      key: 'mobile',
+      render: (_: any, record: MaintenanceRequest) => (
+        <div style={{ padding: '8px 0' }}>
+          <div>
+            <strong>{record.title}</strong>
+          </div>
+          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+            {record.propertyId} - Unit {record.unitId}
+          </div>
+          <div style={{ marginTop: '8px' }}>
+            <Tag color={record.priority === 'high' ? 'orange' : record.priority === 'emergency' ? 'red' : 'green'}>
+              {record.priority.toUpperCase()}
+            </Tag>
+            <Tag color={record.status === 'completed' ? 'green' : 'blue'}>
+              {record.status.toUpperCase()}
+            </Tag>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      width: 80,
+      render: (_: any, record: MaintenanceRequest) => (
+        <Button type="link" size="small" onClick={() => navigate(`/maintenance/${record.id}`)}>
+          View
+        </Button>
+      ),
+    },
+  ];
+
   const maintenanceColumns = [
     {
       title: 'Property',
@@ -282,10 +330,12 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <div className="dashboard-header" style={{ marginBottom: 24 }}>
-        <Title level={2}>Dashboard</Title>
-        <Text type="secondary">
-          Welcome to 221CRM. Overview of your real estate portfolio as of {format(new Date(), 'MMMM dd, yyyy')}
+      <div className="dashboard-header" style={{ marginBottom: isMobile ? 16 : 24 }}>
+        <Title level={isMobile ? 3 : 2}>
+          Welcome back, {user?.user_metadata?.full_name?.split(' ')[0] || 'User'}
+        </Title>
+        <Text type="secondary" style={{ fontSize: isMobile ? '12px' : '14px' }}>
+          Here's your real estate portfolio overview as of {format(new Date(), 'MMMM dd, yyyy')}
         </Text>
       </div>
 
@@ -398,7 +448,8 @@ const Dashboard: React.FC = () => {
               headerBordered
               hoverable
             >
-              <Bar 
+              <div style={{ position: 'relative', height: isMobile ? '200px' : '300px' }}>
+                <Bar 
                 data={chartData}
                 options={{
                   scales: {
@@ -433,9 +484,10 @@ const Dashboard: React.FC = () => {
                 }
               }} 
             />
+              </div>
             <Divider />
-            <Row gutter={16}>
-              <Col span={8}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={8}>
                 <Statistic
                   title="Revenue"
                   value={dashboardData.monthlyRevenue}
@@ -443,7 +495,7 @@ const Dashboard: React.FC = () => {
                   valueStyle={{ color: '#3f8600' }}
                 />
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={8}>
                 <Statistic
                   title="Expenses"
                   value={dashboardData.monthlyExpenses}
@@ -451,7 +503,7 @@ const Dashboard: React.FC = () => {
                   valueStyle={{ color: '#cf1322' }}
                 />
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={8}>
                 <Statistic
                   title="Net Income"
                   value={dashboardData.netIncome}
@@ -527,11 +579,12 @@ const Dashboard: React.FC = () => {
           extra={<Button type="primary" onClick={() => navigate('/maintenance')}>Create Request</Button>}
         >
           <Table
-            columns={maintenanceColumns}
+            columns={isMobile ? mobileMaintenanceColumns : maintenanceColumns}
             dataSource={recentMaintenanceRequests}
             rowKey="id"
             loading={loading}
             pagination={false}
+            scroll={isMobile ? { x: true } : undefined}
           />
         </ProCard>
       </motion.div>

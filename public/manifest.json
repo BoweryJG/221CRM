@@ -1,6 +1,6 @@
 {
-  "short_name": "221CRM",
-  "name": "221CRM - Bowery Real Estate Management",
+  "short_name": "Doug's CRM",
+  "name": "Doug Mino's CRM - 221 Bowery Properties",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,16 +10,22 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#2E5F85",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["business", "productivity"],
+  "description": "Doug Mino's personal real estate management system for 221 Bowery properties"
 }

@@ -42,6 +42,7 @@ const Properties: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [isMobile] = useState(window.innerWidth < 768);
 
   // Mock portfolio data for demonstration
   // In a real app, this would be fetched from Supabase

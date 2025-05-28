@@ -8,10 +8,9 @@ import {
   Card,
   Alert,
   Row,
-  Col,
-  Divider
+  Col
 } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 
 const { Title, Text } = Typography;
@@ -22,12 +21,18 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const onFinish = async (values: { email: string; password: string }) => {
+  const onFinish = async (values: { password: string }) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { error } = await signIn(values.email, values.password);
+      // Simple password check
+      if (values.password !== 'golden') {
+        throw new Error('Invalid password');
+      }
+      
+      // Sign in with Doug Mino's credentials
+      const { error } = await signIn('doug.mino@gmail.com', 'golden');
       
       if (error) {
         throw error;
@@ -37,7 +42,7 @@ const Login: React.FC = () => {
       navigate('/');
     } catch (err: any) {
       console.error('Login error:', err);
-      setError(err.message || 'Failed to login. Please check your credentials.');
+      setError('Invalid password. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -51,14 +56,14 @@ const Login: React.FC = () => {
           style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', borderRadius: '8px' }}
           className="login-card"
         >
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <Title level={2} style={{ marginBottom: 0 }}>221CRM</Title>
-            <Text type="secondary">Bowery Real Estate Management</Text>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <Title level={2} style={{ marginBottom: 8 }}>Doug Mino's CRM</Title>
+            <Text type="secondary">221 Bowery Real Estate Management</Text>
           </div>
           
           {error && (
             <Alert
-              message="Login Failed"
+              message="Access Denied"
               description={error}
               type="error"
               showIcon
@@ -70,34 +75,20 @@ const Login: React.FC = () => {
           
           <Form
             name="login"
-            initialValues={{ remember: true }}
             onFinish={onFinish}
             layout="vertical"
             requiredMark={false}
             size="large"
           >
             <Form.Item
-              name="email"
-              rules={[
-                { required: true, message: 'Please enter your email' },
-                { type: 'email', message: 'Please enter a valid email' }
-              ]}
-            >
-              <Input 
-                prefix={<UserOutlined className="site-form-item-icon" />} 
-                placeholder="Email" 
-                autoComplete="email"
-              />
-            </Form.Item>
-            
-            <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please enter your password' }]}
+              rules={[{ required: true, message: 'Please enter the password' }]}
             >
               <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                placeholder="Password"
+                placeholder="Enter Password"
                 autoComplete="current-password"
+                autoFocus
               />
             </Form.Item>
             
@@ -107,19 +98,14 @@ const Login: React.FC = () => {
                 htmlType="submit" 
                 loading={loading}
                 block
+                size="large"
               >
-                Sign In
+                Access System
               </Button>
             </Form.Item>
             
-            <div style={{ textAlign: 'center' }}>
-              <a href="#forgot-password">Forgot password?</a>
-            </div>
-            
-            <Divider plain>Admin Access Only</Divider>
-            
-            <Text type="secondary" style={{ display: 'block', textAlign: 'center', fontSize: '12px' }}>
-              This system is for authorized personnel only.
+            <Text type="secondary" style={{ display: 'block', textAlign: 'center', fontSize: '12px', marginTop: '24px' }}>
+              This system is for authorized personnel only.<br />
               Unauthorized access is prohibited.
             </Text>
           </Form>
