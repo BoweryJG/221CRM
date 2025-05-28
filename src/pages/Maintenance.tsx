@@ -210,7 +210,7 @@ const Maintenance: React.FC = () => {
         title={
           <Space>
             <Text strong>{item.title}</Text>
-            <Tag color={getPriorityColor(item.priority)} size="small">
+            <Tag color={getPriorityColor(item.priority)}>
               {item.priority}
             </Tag>
           </Space>
