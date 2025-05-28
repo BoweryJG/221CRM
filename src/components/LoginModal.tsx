@@ -5,8 +5,7 @@ import {
   Input, 
   Button, 
   Typography, 
-  Alert,
-  Tooltip
+  Alert
 } from 'antd';
 import { 
   LockOutlined, 
