@@ -53,8 +53,8 @@ const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Redirect to dashboard if already logged in */}
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+        {/* Redirect to maintenance if already logged in */}
+        <Route path="/login" element={user ? <Navigate to="/maintenance" /> : <Login />} />
         
         {/* Protected routes */}
         <Route element={
@@ -62,12 +62,13 @@ const AppRoutes: React.FC = () => {
             <MainLayout />
           </ProtectedRoute>
         }>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Navigate to="/maintenance" />} />
+          <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/tenants" element={<Tenants />} />
-          <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/financial" element={<Financial />} />
           <Route path="/documents" element={<Documents />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
         

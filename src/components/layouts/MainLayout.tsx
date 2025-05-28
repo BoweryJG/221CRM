@@ -101,10 +101,10 @@ const MainLayout: React.FC = () => {
 
   const menuItems = [
     {
-      key: '/',
-      icon: <HomeOutlined />,
-      label: 'Dashboard',
-      onClick: () => handleMenuClick('/'),
+      key: '/maintenance',
+      icon: <ToolOutlined />,
+      label: 'Maintenance',
+      onClick: () => handleMenuClick('/maintenance'),
     },
     {
       key: '/properties',
@@ -119,12 +119,6 @@ const MainLayout: React.FC = () => {
       onClick: () => handleMenuClick('/tenants'),
     },
     {
-      key: '/maintenance',
-      icon: <ToolOutlined />,
-      label: 'Maintenance',
-      onClick: () => handleMenuClick('/maintenance'),
-    },
-    {
       key: '/financial',
       icon: <DollarOutlined />,
       label: 'Financial',
@@ -135,6 +129,12 @@ const MainLayout: React.FC = () => {
       icon: <FileOutlined />,
       label: 'Documents',
       onClick: () => handleMenuClick('/documents'),
+    },
+    {
+      key: '/dashboard',
+      icon: <HomeOutlined />,
+      label: 'Dashboard',
+      onClick: () => handleMenuClick('/dashboard'),
     },
     {
       key: '/settings',

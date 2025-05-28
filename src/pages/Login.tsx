@@ -38,8 +38,8 @@ const Login: React.FC = () => {
         throw error;
       }
       
-      // Successful login - redirect to dashboard
-      navigate('/');
+      // Successful login - redirect to maintenance
+      navigate('/maintenance');
     } catch (err: any) {
       console.error('Login error:', err);
       setError('Invalid password. Please try again.');
