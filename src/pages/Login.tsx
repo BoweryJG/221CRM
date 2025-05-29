@@ -50,7 +50,6 @@ const Login: React.FC = () => {
     setError(null);
     
     try {
-      const { signInWithProvider } = useAuth();
       const { error } = await signInWithProvider('google');
       
       if (error) {
