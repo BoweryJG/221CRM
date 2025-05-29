@@ -5,11 +5,15 @@ import {
   Input, 
   Button, 
   Typography, 
-  Alert
+  Alert,
+  Divider,
+  Space
 } from 'antd';
 import { 
   LockOutlined, 
-  KeyOutlined
+  KeyOutlined,
+  MailOutlined,
+  GoogleOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -20,31 +24,43 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ visible }) => {
-  const { signIn } = useAuth();
+  const { signIn, signInWithProvider } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form] = Form.useForm();
 
-  const handleLogin = async (values: { password: string }) => {
+  const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
     setError(null);
 
     try {
-      // Check if password is correct
-      if (values.password !== 'golden') {
-        throw new Error('Invalid password');
-      }
-      
-      // Sign in with Doug Mino's credentials
-      const { error } = await signIn('doug.mino@gmail.com', 'golden');
+      // Sign in with email and password
+      const { error } = await signIn(values.email, values.password);
       
       if (error) {
         throw error;
       }
     } catch (err: any) {
       console.error('Login error:', err);
-      setError('Invalid password. Please try again.');
+      setError(err.message || 'Invalid email or password. Please try again.');
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const { error } = await signInWithProvider('google');
+      
+      if (error) {
+        throw error;
+      }
+    } catch (err: any) {
+      console.error('Google login error:', err);
+      setError(err.message || 'Failed to sign in with Google');
       setLoading(false);
     }
   };
@@ -62,8 +78,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible }) => {
       <div style={{ padding: '20px 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <KeyOutlined style={{ fontSize: '48px', color: '#2E5F85', marginBottom: '16px' }} />
-          <Title level={2} style={{ marginBottom: 8 }}>Doug Mino's CRM</Title>
-          <Text type="secondary">Enter Password to Access</Text>
+          <Title level={2} style={{ marginBottom: 8 }}>221 CRM</Title>
+          <Text type="secondary">Sign in to continue</Text>
         </div>
         
         {error && (
@@ -87,15 +103,28 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible }) => {
           size="large"
         >
           <Form.Item
+            name="email"
+            rules={[
+              { required: true, message: 'Please enter your email' },
+              { type: 'email', message: 'Please enter a valid email' }
+            ]}
+          >
+            <Input
+              prefix={<MailOutlined />}
+              placeholder="Email"
+              autoComplete="email"
+              autoFocus
+            />
+          </Form.Item>
+          
+          <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Please enter the password' }]}
-            extra={<Text type="secondary" style={{ fontSize: '12px' }}>Hint: Jason's last name</Text>}
+            rules={[{ required: true, message: 'Please enter your password' }]}
           >
             <Input.Password
               prefix={<LockOutlined />}
               placeholder="Password"
               autoComplete="current-password"
-              autoFocus
             />
           </Form.Item>
           
@@ -107,10 +136,24 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible }) => {
               block
               size="large"
             >
-              Access System
+              Sign In
             </Button>
           </Form.Item>
         </Form>
+        
+        <Divider style={{ margin: '16px 0' }}>Or</Divider>
+        
+        <Space direction="vertical" style={{ width: '100%' }}>
+          <Button
+            icon={<GoogleOutlined />}
+            onClick={handleGoogleLogin}
+            loading={loading}
+            block
+            size="large"
+          >
+            Continue with Google
+          </Button>
+        </Space>
         
         <div style={{ 
           textAlign: 'center',

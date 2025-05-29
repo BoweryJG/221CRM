@@ -8,42 +8,57 @@ import {
   Card,
   Alert,
   Row,
-  Col
+  Col,
+  Divider,
+  Space
 } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 
 const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { signIn, signInWithProvider } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const onFinish = async (values: { password: string }) => {
+  const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true);
     setError(null);
 
     try {
-      // Simple password check
-      if (values.password !== 'golden') {
-        throw new Error('Invalid password');
-      }
-      
-      // Sign in with Doug Mino's credentials
-      const { error } = await signIn('doug.mino@gmail.com', 'golden');
+      // Sign in with email and password
+      const { error } = await signIn(values.email, values.password);
       
       if (error) {
         throw error;
       }
       
-      // Successful login - redirect to maintenance
-      navigate('/maintenance');
+      // Successful login - redirect to dashboard
+      navigate('/dashboard');
     } catch (err: any) {
       console.error('Login error:', err);
-      setError('Invalid password. Please try again.');
+      setError(err.message || 'Invalid email or password. Please try again.');
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const { signInWithProvider } = useAuth();
+      const { error } = await signInWithProvider('google');
+      
+      if (error) {
+        throw error;
+      }
+    } catch (err: any) {
+      console.error('Google login error:', err);
+      setError(err.message || 'Failed to sign in with Google');
       setLoading(false);
     }
   };
@@ -57,8 +72,8 @@ const Login: React.FC = () => {
           className="login-card"
         >
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <Title level={2} style={{ marginBottom: 8 }}>Doug Mino's CRM</Title>
-            <Text type="secondary">221 Bowery Real Estate Management</Text>
+            <Title level={2} style={{ marginBottom: 8 }}>221 CRM</Title>
+            <Text type="secondary">Bowery Real Estate Management System</Text>
           </div>
           
           {error && (
@@ -81,15 +96,28 @@ const Login: React.FC = () => {
             size="large"
           >
             <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: 'Please enter your email' },
+                { type: 'email', message: 'Please enter a valid email' }
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                placeholder="Email"
+                autoComplete="email"
+                autoFocus
+              />
+            </Form.Item>
+            
+            <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please enter the password' }]}
-              extra={<Text type="secondary" style={{ fontSize: '12px' }}>Hint: Jason's last name</Text>}
+              rules={[{ required: true, message: 'Please enter your password' }]}
             >
               <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                placeholder="Enter Password"
+                placeholder="Password"
                 autoComplete="current-password"
-                autoFocus
               />
             </Form.Item>
             
@@ -101,15 +129,29 @@ const Login: React.FC = () => {
                 block
                 size="large"
               >
-                Access System
+                Sign In
               </Button>
             </Form.Item>
-            
-            <Text type="secondary" style={{ display: 'block', textAlign: 'center', fontSize: '12px', marginTop: '24px' }}>
-              This system is for authorized personnel only.<br />
-              Unauthorized access is prohibited.
-            </Text>
           </Form>
+          
+          <Divider style={{ margin: '24px 0' }}>Or</Divider>
+          
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Button
+              icon={<GoogleOutlined />}
+              onClick={handleGoogleLogin}
+              loading={loading}
+              block
+              size="large"
+              style={{ height: '40px' }}
+            >
+              Continue with Google
+            </Button>
+          </Space>
+          
+          <Text type="secondary" style={{ display: 'block', textAlign: 'center', fontSize: '12px', marginTop: '24px' }}>
+            Don't have an account? Contact your administrator.
+          </Text>
         </Card>
       </Col>
     </Row>
